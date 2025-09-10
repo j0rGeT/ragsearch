@@ -418,9 +418,18 @@ function addMessageToChat(role, content, isLoading = false, sources = null) {
         `;
     }
     
+    let contentHtml;
+    if (role === 'assistant') {
+        // 使用marked解析markdown
+        contentHtml = marked.parse(content);
+    } else {
+        // 用户消息保持纯文本，防止XSS
+        contentHtml = escapeHtml(content);
+    }
+    
     messageDiv.innerHTML = `
         <div class="message-${role}">
-            ${escapeHtml(content)}
+            ${contentHtml}
             ${sourcesHtml}
             <div class="message-meta">
                 ${new Date().toLocaleTimeString()}

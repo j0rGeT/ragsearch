@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG检索系统</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <header class="header">
+            <h1><i class="fas fa-brain"></i> RAG检索系统</h1>
+            <p>基于人工智能的智能文档问答系统</p>
+        </header>
+
+        <!-- 主要内容区域 -->
+        <div class="main-content">
+            <!-- 左侧知识库管理 -->
+            <div class="sidebar">
+                <div class="section">
+                    <h3><i class="fas fa-database"></i> 知识库管理</h3>
+                    
+                    <!-- 创建知识库 -->
+                    <div class="kb-create">
+                        <input type="text" id="kb-name" placeholder="知识库名称" class="input">
+                        <input type="text" id="kb-desc" placeholder="知识库描述" class="input">
+                        <button onclick="createKnowledgeBase()" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> 创建知识库
+                        </button>
+                    </div>
+
+                    <!-- 知识库列表 -->
+                    <div class="kb-list">
+                        <h4>现有知识库</h4>
+                        <div id="knowledge-bases" class="kb-items">
+                            <!-- 知识库列表将在这里动态加载 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 文档上传 -->
+                <div class="section">
+                    <h3><i class="fas fa-upload"></i> 文档上传</h3>
+                    <div class="upload-area">
+                        <div id="current-kb" class="current-kb">
+                            请先选择知识库
+                        </div>
+                        <input type="file" id="file-input" accept=".pdf,.docx,.txt" class="file-input">
+                        <label for="file-input" class="file-label">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            选择文件 (PDF/Word/TXT)
+                        </label>
+                        <button onclick="uploadDocument()" class="btn btn-success" disabled id="upload-btn">
+                            <i class="fas fa-upload"></i> 上传文档
+                        </button>
+                    </div>
+                    
+                    <!-- 文档列表 -->
+                    <div class="document-list">
+                        <h4>文档列表</h4>
+                        <div id="documents" class="doc-items">
+                            <!-- 文档列表将在这里动态加载 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧对话区域 -->
+            <div class="chat-area">
+                <div class="section">
+                    <h3><i class="fas fa-comments"></i> 智能对话</h3>
+                    
+                    <!-- 对话历史 -->
+                    <div id="chat-history" class="chat-history">
+                        <div class="welcome-message">
+                            <i class="fas fa-robot"></i>
+                            <p>欢迎使用RAG检索系统！</p>
+                            <p>请选择知识库，然后开始对话。我会根据知识库内容为您答疑解惑。</p>
+                        </div>
+                    </div>
+
+                    <!-- 输入区域 -->
+                    <div class="chat-input-area">
+                        <div class="input-container">
+                            <input type="text" id="chat-input" placeholder="输入您的问题..." class="chat-input" disabled>
+                            <button onclick="sendMessage()" class="btn btn-chat" disabled id="send-btn">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                        <div class="chat-controls">
+                            <label>
+                                <span>检索数量:</span>
+                                <input type="number" id="top-k" value="5" min="1" max="10" class="control-input">
+                            </label>
+                            <label>
+                                <span>相似度阈值:</span>
+                                <input type="number" id="threshold" value="0.7" min="0" max="1" step="0.1" class="control-input">
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="use-search-engine" checked class="checkbox-input">
+                                <span>启用搜索引擎增强</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 状态提示 -->
+        <div id="status-message" class="status-message"></div>
+    </div>
+
+    <!-- 加载动画 -->
+    <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+        <p>处理中...</p>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
